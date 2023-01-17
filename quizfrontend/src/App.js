@@ -2,6 +2,9 @@ import { Route, Routes } from 'react-router-dom'
 import Results from './components/Results'
 import Questions from './components/Questions'
 import Home from './components/Home'
+import Login from './components/Login'
+import Statistics from './components/Statistics'
+import About from './components/About'
 import {
   AppBar,
   Toolbar,
@@ -9,12 +12,13 @@ import {
   Typography,
   Stack,
   Button,
+  Container,
 } from '@mui/material'
 import QuizIcon from '@mui/icons-material/Quiz'
 
 const App = () => {
   return (
-    <>
+    <Container>
       <AppBar position="static">
         <Toolbar>
           <div>
@@ -23,6 +27,7 @@ const App = () => {
               edge="start"
               color="inherit"
               aria-label="logo"
+              href="/"
             >
               <QuizIcon />
               <Typography variant="h4" sx={{ margin: 3, flexGrow: 1 }}>
@@ -31,13 +36,37 @@ const App = () => {
             </IconButton>
           </div>
           <Stack direction="row" spacing={4}>
-            <Button style={{width: '100px', height: '50px'}}  size="large" color="inherit">
+            <Button
+              style={{ width: '100px', height: '50px' }}
+              size="large"
+              color="inherit"
+              href="/questions"
+            >
               Quiz
             </Button>
-            <Button style={{width: '100px', height: '50px'}}  size="large" color="inherit">
+
+            <Button
+              style={{ width: '100px', height: '50px' }}
+              size="large"
+              color="inherit"
+              href="/login"
+            >
               Login
             </Button>
-            <Button style={{width: '100px', height: '50px'}}  size="large" color="inherit">
+            <Button
+              style={{ width: '100px', height: '50px' }}
+              size="large"
+              color="inherit"
+              href="/stats"
+            >
+              Stats
+            </Button>
+            <Button
+              style={{ width: '100px', height: '50px' }}
+              size="large"
+              color="inherit"
+              href="/about"
+            >
               About
             </Button>
           </Stack>
@@ -47,8 +76,11 @@ const App = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/questions" element={<Questions />}></Route>
         <Route path="/results" element={<Results />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route path="/stats" element={<Statistics />}></Route>
       </Routes>
-    </>
+    </Container>
   )
 }
 
