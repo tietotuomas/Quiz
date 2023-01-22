@@ -5,6 +5,9 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Statistics from './components/Statistics'
 import About from './components/About'
+import NewQuiz from './components/NewQuiz'
+import ChooseQuiz from './components/ChooseQuiz'
+
 import {
   AppBar,
   Toolbar,
@@ -35,14 +38,23 @@ const App = () => {
               </Typography>
             </IconButton>
           </div>
-          <Stack direction="row" spacing={4}>
+          <Stack direction="row" spacing={2}>
             <Button
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/questions"
+              href="/choose-quiz"
             >
               Quiz
+            </Button>
+
+            <Button
+              style={{ width: '100px', height: '50px' }}
+              size="large"
+              color="inherit"
+              href="/create-quiz"
+            >
+              Create
             </Button>
 
             <Button
@@ -74,6 +86,8 @@ const App = () => {
       </AppBar>
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/choose-quiz" element={<ChooseQuiz/>}></Route>
+        <Route path="/create-quiz" element={<NewQuiz />}></Route>
         <Route path="/questions" element={<Questions />}></Route>
         <Route path="/results" element={<Results />}></Route>
         <Route path="/login" element={<Login />}></Route>
