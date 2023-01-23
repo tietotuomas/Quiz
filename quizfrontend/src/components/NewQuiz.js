@@ -1,14 +1,19 @@
 import { Box, Button, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import QuestionTextField from './QuestionField'
 import SelectField from './SelectField'
 
-const NewQuiz = () => {
+const NewQuiz = ({ quizzes, setQuizzes }) => {
   console.log('NewQuiz renderöityy')
 
-  const [quiz, setQuiz] = useState([])
+  const [quiz, setQuiz] = useState({
+    topic: '',
+    introduction: '',
+    questions: [],
+  })
   const [questionNumber, setQuestionNumber] = useState(0)
   const [categories, setCategories] = useState([
+    'Information Technology',
     'General Knowledge',
     'Art',
     'Sports',
@@ -27,6 +32,21 @@ const NewQuiz = () => {
     wrong4: '',
   })
 
+  //handle resetting the forms after questionNumber > amountOfQuestions
+  //and add a new quiz to App state
+  useEffect(() => {
+    if (questionNumber > amountOfQuestions) {
+      console.log('QUIZ RDY')
+      console.log({ quiz })
+      setQuizzes(quizzes.concat(quiz))
+      setQuestionNumber(0)
+      setCategory('')
+      setAmountOfQuestions('')
+      setType('')
+      setQuiz({ topic: '', introduction: '', questions: [] })
+    }
+  }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes])
+
   const handleOptionChange = (event, setOption) => {
     console.log('option change')
     setOption(event.target.value)
@@ -41,6 +61,14 @@ const NewQuiz = () => {
     //   console.log('submit')
     //   setQuestionNumber(1)
     // }
+  }
+
+  const handleTopicChange = (changedTopic) => {
+    setQuiz({ ...quiz, topic: changedTopic })
+  }
+
+  const handleIntroductionChange = (changedIntroduction) => {
+    setQuiz({ ...quiz, introduction: changedIntroduction })
   }
 
   if (questionNumber === 0) {
@@ -75,7 +103,23 @@ const NewQuiz = () => {
             label="Select the type of quiz"
             option={type}
             handleOptionChange={(event) => handleOptionChange(event, setType)}
-            options={['True/False answers', 'Multichoice answers', 'Open answer (exact string)']}
+            options={[
+              'True/False answers',
+              'Multichoice answers',
+              'Open answer (exact string)',
+            ]}
+          />
+          <QuestionTextField
+            questionNumber={questionNumber}
+            label={`Topic of the quiz`}
+            onChange={handleTopicChange}
+          />
+          <QuestionTextField
+            questionNumber={questionNumber}
+            label={`Introduction to the topic/quiz`}
+            onChange={handleIntroductionChange}
+            required={false}
+            helper="optional"
           />
 
           <Button
@@ -88,6 +132,11 @@ const NewQuiz = () => {
         </form>
       </Box>
     )
+  }
+
+  const handleTrueFalseChange = (event) => {
+    setIsQuestionTrue(event.target.value)
+    setQuestion({ ...question, answer: event.target.value })
   }
 
   const handleQuestionChange = (changedQuestion) => {
@@ -118,13 +167,10 @@ const NewQuiz = () => {
     event.preventDefault()
     console.log('submit question')
     console.log(questionNumber, '+1')
-    if (type === 'True/False') {
-      setQuestion({ ...question, answer: isQuestionTrue })
-    }
-    setIsQuestionTrue('')
 
     setQuestionNumber(questionNumber + 1)
-    setQuiz(quiz.concat(question))
+    setQuiz({ ...quiz, questions: quiz.questions.concat(question) })
+    setIsQuestionTrue('')
     setQuestion({
       question: '',
       answer: '',
@@ -133,15 +179,6 @@ const NewQuiz = () => {
       wrong3: '',
       wrong4: '',
     })
-
-    if (questionNumber === amountOfQuestions) {
-      console.log('QUIZ RDY')
-      setQuestionNumber(0)
-      setCategory('')
-      setAmountOfQuestions('')
-      setType('')
-      setQuiz([])
-    }
   }
 
   const AnswerFields = () => {
@@ -150,9 +187,7 @@ const NewQuiz = () => {
         <SelectField
           label="Select the correct answer to the question"
           option={isQuestionTrue}
-          handleOptionChange={(event) =>
-            handleOptionChange(event, setIsQuestionTrue)
-          }
+          handleOptionChange={handleTrueFalseChange}
           options={['True', 'False']}
         />
       )
@@ -180,12 +215,14 @@ const NewQuiz = () => {
             label={`Fill the third wrong choice/answer`}
             onChange={handleThirdWrongChange}
             required={false}
+            helper="optional"
           />
           <QuestionTextField
             questionNumber={questionNumber}
             label={`Fill the fourth wrong choice/answer`}
             onChange={handleFourthWrongChange}
             required={false}
+            helper="optional"
           />
         </>
       )
