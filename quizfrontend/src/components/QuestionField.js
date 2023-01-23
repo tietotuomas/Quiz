@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 
-const QuestionTextField = ({ label, onChange, questionNumber }) => {
+const QuestionTextField = ({ label, onChange, questionNumber, required=true, helper=null }) => {
   console.log('SelectField renderöityy')
   const [text, setText] = useState('')
   const resetText = () => setText('')
@@ -17,9 +17,11 @@ const QuestionTextField = ({ label, onChange, questionNumber }) => {
         setText(event.target.value)
         onChange(event.target.value)
       }}
-      color="secondary"
+      color="primary"
       size="large"
       fullWidth
+      required={required}
+      helperText={helper}
     />
   )
 }

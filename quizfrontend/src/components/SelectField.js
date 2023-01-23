@@ -1,6 +1,6 @@
 import { TextField, MenuItem } from '@mui/material'
 
-const SelectField = ({ options, option, label, handleOptionChange }) => {
+const SelectField = ({ options, option, label, handleOptionChange, helper, required=true}) => {
   console.log('SelectField renderöityy')
   return (
     <>
@@ -10,7 +10,9 @@ const SelectField = ({ options, option, label, handleOptionChange }) => {
         onChange={handleOptionChange}
         select
         fullWidth
-        color="secondary"
+        color="primary"
+        helperText={helper ? helper : null}
+        required={required}
       >
         {options.map((o) => (
           <MenuItem value={o} key={o}>

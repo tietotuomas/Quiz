@@ -23,6 +23,8 @@ const NewQuiz = () => {
     answer: '',
     wrong1: '',
     wrong2: '',
+    wrong3: '',
+    wrong4: '',
   })
 
   const handleOptionChange = (event, setOption) => {
@@ -32,12 +34,13 @@ const NewQuiz = () => {
 
   const handleSettingsSubmit = (event) => {
     event.preventDefault()
-    if (!category || !amountOfQuestions || !type) {
-      console.log('Please fill all the fields')
-    } else {
-      console.log('submit')
-      setQuestionNumber(1)
-    }
+    setQuestionNumber(1)
+    // if (!category || !amountOfQuestions || !type) {
+    //   console.log('Please fill all the fields')
+    // } else {
+    //   console.log('submit')
+    //   setQuestionNumber(1)
+    // }
   }
 
   if (questionNumber === 0) {
@@ -69,10 +72,10 @@ const NewQuiz = () => {
             options={[3, 4, 5, 6, 7, 8, 9, 10]}
           />
           <SelectField
-            label="Select the type of questions"
+            label="Select the type of quiz"
             option={type}
             handleOptionChange={(event) => handleOptionChange(event, setType)}
-            options={['True/False', 'Multichoice', 'Open (exact string)']}
+            options={['True/False answers', 'Multichoice answers', 'Open answer (exact string)']}
           />
 
           <Button
@@ -103,6 +106,14 @@ const NewQuiz = () => {
     setQuestion({ ...question, wrong2: changedAnswer })
   }
 
+  const handleThirdWrongChange = (changedAnswer) => {
+    setQuestion({ ...question, wrong3: changedAnswer })
+  }
+
+  const handleFourthWrongChange = (changedAnswer) => {
+    setQuestion({ ...question, wrong4: changedAnswer })
+  }
+
   const handleQuestionSubmit = (event) => {
     event.preventDefault()
     console.log('submit question')
@@ -114,7 +125,14 @@ const NewQuiz = () => {
 
     setQuestionNumber(questionNumber + 1)
     setQuiz(quiz.concat(question))
-    setQuestion({ question: '', answer: '', wrong1: '', wrong2: '' })
+    setQuestion({
+      question: '',
+      answer: '',
+      wrong1: '',
+      wrong2: '',
+      wrong3: '',
+      wrong4: '',
+    })
 
     if (questionNumber === amountOfQuestions) {
       console.log('QUIZ RDY')
@@ -127,7 +145,7 @@ const NewQuiz = () => {
   }
 
   const AnswerFields = () => {
-    if (type === 'True/False') {
+    if (type === 'True/False answers') {
       return (
         <SelectField
           label="Select the correct answer to the question"
@@ -139,7 +157,7 @@ const NewQuiz = () => {
         />
       )
     }
-    if (type === 'Multichoice') {
+    if (type === 'Multichoice answers') {
       return (
         <>
           <QuestionTextField
@@ -157,10 +175,22 @@ const NewQuiz = () => {
             label={`Fill the second wrong choice/answer`}
             onChange={handleSecondWrongChange}
           />
+          <QuestionTextField
+            questionNumber={questionNumber}
+            label={`Fill the third wrong choice/answer`}
+            onChange={handleThirdWrongChange}
+            required={false}
+          />
+          <QuestionTextField
+            questionNumber={questionNumber}
+            label={`Fill the fourth wrong choice/answer`}
+            onChange={handleFourthWrongChange}
+            required={false}
+          />
         </>
       )
     }
-    if (type === 'Open (exact string)') {
+    if (type === 'Open answer (exact string)') {
       return (
         <QuestionTextField
           questionNumber={questionNumber}
