@@ -10,4 +10,6 @@
 | 23.1. |     3 | Lomakkeiden &ndash; jotka luodaan käyttäjän antamisen asetuksien pohjalta ja joihin kirjataan siis varsinaiset kysymykset ja vastaukset  &ndash; rakentaminen| 
 | 23.1. |     3 | Em. uuden visailun luomiseen liittyvien lomakkeiden käsin testausta, bugien korjausta ja ehostusta |
 | 25.1. |     2 | Alustavan listauksen rakentaminen sovellukseen jo luotujen visailujen näyttämiseen. Tämän ominaisuuden yhdistäminen visailujen luonti-lomakkeisiin |
+| ? |     ? | Visailujen vastaus -lomakkeen luonti. |
+| ? |     ? | Notifikaatio-komponentin rakentaminen. Notifikaatioiden luonti tärkeimmille tapahtumille (esim. uuden visailun luominen) |
 | yht   |  17  || 
