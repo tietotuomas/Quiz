@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import QuestionTextField from './QuestionField'
 import SelectField from './SelectField'
+import { useNavigate } from 'react-router-dom'
 
 const NewQuiz = ({ quizzes, setQuizzes }) => {
   console.log('NewQuiz renderöityy')
@@ -10,6 +11,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
     topic: '',
     introduction: '',
     questions: [],
+    type: '',
   })
   const [questionNumber, setQuestionNumber] = useState(0)
   const [categories, setCategories] = useState([
@@ -32,6 +34,8 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
     wrong4: '',
   })
 
+  const navigate = useNavigate()
+
   //handle resetting the forms after questionNumber > amountOfQuestions
   //and add a new quiz to App state
   useEffect(() => {
@@ -44,8 +48,9 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
       setAmountOfQuestions('')
       setType('')
       setQuiz({ topic: '', introduction: '', questions: [] })
+      navigate('/choose-quiz')
     }
-  }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes])
+  }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes, navigate])
 
   const handleOptionChange = (event, setOption) => {
     console.log('option change')
@@ -54,6 +59,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
 
   const handleSettingsSubmit = (event) => {
     event.preventDefault()
+    setQuiz({...quiz, type: type})
     setQuestionNumber(1)
     // if (!category || !amountOfQuestions || !type) {
     //   console.log('Please fill all the fields')
