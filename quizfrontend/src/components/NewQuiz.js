@@ -36,7 +36,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
 
   const navigate = useNavigate()
 
-  //handle resetting the forms after questionNumber > amountOfQuestions
+  //handle resetting the forms after quiz is fully created
   //and add a new quiz to App state
   useEffect(() => {
     if (questionNumber > amountOfQuestions) {
@@ -61,12 +61,6 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
     event.preventDefault()
     setQuiz({...quiz, type: type})
     setQuestionNumber(1)
-    // if (!category || !amountOfQuestions || !type) {
-    //   console.log('Please fill all the fields')
-    // } else {
-    //   console.log('submit')
-    //   setQuestionNumber(1)
-    // }
   }
 
   const handleTopicChange = (changedTopic) => {

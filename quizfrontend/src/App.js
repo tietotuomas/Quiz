@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useMatch } from 'react-router-dom'
 import Results from './components/Results'
 import Questions from './components/Questions'
 import Home from './components/Home'
@@ -7,6 +7,10 @@ import Statistics from './components/Statistics'
 import About from './components/About'
 import NewQuiz from './components/NewQuiz'
 import QuizList from './components/QuizList'
+import Quiz from './components/Quiz'
+
+import QuizIcon from '@mui/icons-material/Quiz'
+
 
 import {
   AppBar,
@@ -17,13 +21,14 @@ import {
   Button,
   Container,
 } from '@mui/material'
-import QuizIcon from '@mui/icons-material/Quiz'
+
 import { useState } from 'react'
 
 const App = () => {
   const intialTrueFalseQuiz = {
+    id: 1,
     topic: 'GraphQL true/false',
-    introduction: '',
+    introduction: 'GraphQL is a query language for your API',
     type: 'True/False answers',
     questions: [
       {
@@ -55,6 +60,7 @@ const App = () => {
     ],
   }
   const intialMultichoiceQuiz = {
+    id: 2,
     topic: 'GraphQL multichoice',
     introduction: '',
     type: 'Multichoice answers',
@@ -88,6 +94,11 @@ const App = () => {
     ],
   }
   const [quizzes, setQuizzes] = useState([intialTrueFalseQuiz, intialMultichoiceQuiz])
+  const match = useMatch('/quizzes/:id')
+  const quiz = match 
+    ? quizzes.find(q => q.id === Number(match.params.id))
+    : null
+
   return (
     <Container>
       <AppBar position="static">
@@ -111,7 +122,7 @@ const App = () => {
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/choose-quiz"
+              href="/quizzes"
             >
               Quiz
             </Button>
@@ -155,7 +166,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route
-          path="/choose-quiz"
+          path="/quizzes"
           element={<QuizList quizzes={quizzes} />}
         ></Route>
         <Route
@@ -163,6 +174,7 @@ const App = () => {
           element={<NewQuiz quizzes={quizzes} setQuizzes={setQuizzes} />}
         ></Route>
         <Route path="/questions" element={<Questions />}></Route>
+        <Route path="/quizzes/:id" element={<Quiz quiz={quiz}/>} />
         <Route path="/results" element={<Results />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
