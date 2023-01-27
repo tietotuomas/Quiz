@@ -1,4 +1,4 @@
-import { Route, Routes, useMatch } from 'react-router-dom'
+import { Route, Routes, useMatch, Link } from 'react-router-dom'
 import Results from './components/Results'
 import Questions from './components/Questions'
 import Home from './components/Home'
@@ -142,11 +142,12 @@ const App = () => {
         <Toolbar>
           <div>
             <IconButton
+            component={Link}
               size="large"
               edge="start"
               color="inherit"
               aria-label="logo"
-              href="/"
+              to="/"
             >
               <QuizIcon />
               <Typography variant="h4" sx={{ margin: 3, flexGrow: 1 }}>
@@ -156,45 +157,50 @@ const App = () => {
           </div>
           <Stack direction="row" spacing={2}>
             <Button
+            component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/quizzes"
+              to="/quizzes"
             >
               Quiz
             </Button>
             
 
             <Button
+            component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/create-quiz"
+              to="/create-quiz"
             >
               Create
             </Button>
 
             <Button
+            component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/login"
+              to="/login"
             >
               Login
             </Button>
             <Button
+            component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/stats"
+              to="/stats"
             >
               Stats
             </Button>
             <Button
+            component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
-              href="/about"
+              to="/about"
             >
               About
             </Button>

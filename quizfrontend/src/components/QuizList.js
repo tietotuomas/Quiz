@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import {Link} from 'react-router-dom'
 
 const QuizList = ({ quizzes }) => {
   const [filter, setFilter] = useState('')
@@ -42,9 +43,10 @@ const QuizList = ({ quizzes }) => {
             key={q.topic}
           >
             <Button
+            component={Link}
               variant="contained"
               sx={{ width: '100%' }}
-              href={`/quizzes/${q.id}`}
+              to={`/quizzes/${q.id}`}
             >
               <ListItemText
                 primary={q.topic}
