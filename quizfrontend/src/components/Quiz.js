@@ -6,7 +6,6 @@ const Quiz = ({ quiz }) => {
   console.log({ quiz })
   //conditional rendering is set using the questionNumber
   const [questionNumber, setQuestionNumber] = useState(0)
-  // const [isQuestionTrue, setIsQuestionTrue] = useState('')
   const [answer, setAnswer] = useState('')
   const [answers, setAnswers] = useState([])
 
@@ -16,10 +15,7 @@ const Quiz = ({ quiz }) => {
 
   useEffect(() => {
     if (questionNumber > quiz.questions.length) {
-      console.log('vastaukset valmiit')
-      console.log({ answers })
       setAnswers([])
-      // setIsQuestionTrue('')
       setQuestionNumber(0)
       setAnswer('')
     }
@@ -32,18 +28,6 @@ const Quiz = ({ quiz }) => {
     setQuestionNumber(questionNumber + 1)
     setAnswers(answers.concat(answer))
     setAnswer('')
-    // if (quiz.type === 'True/False answers') {
-    //   setAnswers(answers.concat(answer))
-    //   setAnswer('')
-    // }
-    // if (quiz.type === 'Multichoice answers') {
-    //   setAnswers(answers.concat(answer))
-    //   setAnswer('')
-    // }
-    // if (quiz.type === 'Open answer (exact string)') {
-    //   setAnswers(answers.concat(answer))
-    //   setAnswer('')
-    // }
   }
 
   const AnswerFields = (question) => {
