@@ -1,94 +1,101 @@
-import { Box, Typography, Button, List, ListItem } from '@mui/material'
-import { useState } from 'react'
+import { Box, Typography, Button, TextField } from '@mui/material'
+import { useEffect, useState } from 'react'
 import SelectField from './SelectField'
 
 const Quiz = ({ quiz }) => {
-  //   const [questionNumber, setQuestionNumber] = useState(0)
-  const [quizStarted, setQuizStarted] = useState(false)
-  const [isQuestionTrue, setIsQuestionTrue] = useState('')
-  const [answers, setAnswers] = useState(null)
+  console.log({ quiz })
+  //conditional rendering is set using the questionNumber
+  const [questionNumber, setQuestionNumber] = useState(0)
+  // const [isQuestionTrue, setIsQuestionTrue] = useState('')
+  const [answer, setAnswer] = useState('')
+  const [answers, setAnswers] = useState([])
 
   const handleStartQuiz = () => {
-    setQuizStarted(true)
-    setAnswers(Array(quiz.questions.length).fill(''))
+    setQuestionNumber(1)
   }
+
+  useEffect(() => {
+    if (questionNumber > quiz.questions.length) {
+      console.log('vastaukset valmiit')
+      console.log({ answers })
+      setAnswers([])
+      // setIsQuestionTrue('')
+      setQuestionNumber(0)
+      setAnswer('')
+    }
+  }, [questionNumber, quiz.questions.length])
 
   const handleAnswersSubmit = (event) => {
-    console.log('vastaukset lähetetty')
-    console.log({answers});
+    console.log({ answers })
     event.preventDefault()
-    setAnswers(null)
-    setIsQuestionTrue('')
-    setQuizStarted(false)
 
-    
+    setQuestionNumber(questionNumber + 1)
+    setAnswers(answers.concat(answer))
+    setAnswer('')
+    // if (quiz.type === 'True/False answers') {
+    //   setAnswers(answers.concat(answer))
+    //   setAnswer('')
+    // }
+    // if (quiz.type === 'Multichoice answers') {
+    //   setAnswers(answers.concat(answer))
+    //   setAnswer('')
+    // }
+    // if (quiz.type === 'Open answer (exact string)') {
+    //   setAnswers(answers.concat(answer))
+    //   setAnswer('')
+    // }
   }
 
-  const handleTrueFalseChange = (event, i) => {
-    setIsQuestionTrue(event.target.value)
-    setAnswers(answers.map((a, index) => index === i ? event.target.value : a))
-  }
-
-  const AnswerFields = (q, i) => {
-    console.log([{q}, {i}]);
+  const AnswerFields = (question) => {
     if (quiz.type === 'True/False answers') {
       return (
         <SelectField
-          label="Select the correct answer to the question"
-          option={isQuestionTrue}
-          handleOptionChange={(event, i) => handleTrueFalseChange(event, i)}
+          label="Select the correct answer"
+          option={answer}
+          handleOptionChange={(event) => setAnswer(event.target.value)}
           options={['True', 'False']}
           required={false}
         />
       )
     }
-    // if (quiz.type === 'Multichoice answers') {
-    //   return (
-    //     <>
-    //       <QuestionTextField
-    //         questionNumber={questionNumber}
-    //         label={`Fill the correct choice/answer`}
-    //         onChange={handleCorrectAnswerChange}
-    //       />
-    //       <QuestionTextField
-    //         questionNumber={questionNumber}
-    //         label={`Fill the first wrong choice/answer`}
-    //         onChange={handleFirstWrongChange}
-    //       />
-    //       <QuestionTextField
-    //         questionNumber={questionNumber}
-    //         label={`Fill the second wrong choice/answer`}
-    //         onChange={handleSecondWrongChange}
-    //       />
-    //       <QuestionTextField
-    //         questionNumber={questionNumber}
-    //         label={`Fill the third wrong choice/answer`}
-    //         onChange={handleThirdWrongChange}
-    //         required={false}
-    //         helper="optional"
-    //       />
-    //       <QuestionTextField
-    //         questionNumber={questionNumber}
-    //         label={`Fill the fourth wrong choice/answer`}
-    //         onChange={handleFourthWrongChange}
-    //         required={false}
-    //         helper="optional"
-    //       />
-    //     </>
-    //   )
-    // }
-    // if (quiz.type === 'Open answer (exact string)') {
-    //   return (
-    //     <QuestionTextField
-    //       questionNumber={questionNumber}
-    //       label={`Fill the correct answer`}
-    //       onChange={handleCorrectAnswerChange}
-    //     />
-    //   )
-    // }
+    if (quiz.type === 'Multichoice answers') {
+      const choices = [
+        question.answer,
+        question.wrong1,
+        question.wrong2,
+        question.wrong3,
+        question.wrong4,
+      ]
+
+      const shuffledChoices = choices
+        .filter((c) => c !== '')
+        .sort(() => Math.random() - 0.5)
+
+      return (
+        <SelectField
+          label="Select the correct answer"
+          option={answer}
+          handleOptionChange={(event) => setAnswer(event.target.value)}
+          options={shuffledChoices}
+          required={false}
+        />
+      )
+    }
+
+    if (quiz.type === 'Open answer (exact string)') {
+      return (
+        <TextField
+          style={{ marginTop: '10px', marginBottom: '10px' }}
+          fullWidth
+          label={`Fill the correct answer`}
+          value={answer}
+          onChange={(event) => setAnswer(event.target.value)}
+        />
+      )
+    }
   }
 
-  if (!quizStarted) {
+  if (questionNumber === 0) {
     return (
       <Box
         mt={5}
@@ -101,72 +108,45 @@ const Quiz = ({ quiz }) => {
         <Typography variant="h5" margin={3}>
           {quiz.introduction}
         </Typography>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={handleStartQuiz}
-        >
+        <Button variant="contained" type="submit" onClick={handleStartQuiz}>
           Start the quiz
         </Button>
       </Box>
     )
   }
 
-  return (
-    <Box
-      mt={5}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="flex-end"
-    >
-      <form onSubmit={handleAnswersSubmit}>
-        {quiz.questions.map((q, i) => (<div key={q.question} >
+  if (questionNumber <= quiz.questions.length) {
+    return (
+      <Box mt={5} display="flex" flexDirection="column" alignItems="center">
+        <form
+          onSubmit={handleAnswersSubmit}
+          style={{
+            width: '50%',
+            margin: 'auto',
+            position: 'relative',
+            paddingBottom: '50px',
+          }}
+        >
           <Typography variant="h5">
-            {q.question}
-            
+            {quiz.questions[questionNumber - 1].question}
           </Typography>
-          {AnswerFields(q, i)}
-          </div>
-        ))}
-        <Button variant="contained" type="submit">
-          Send
-        </Button>
-      </form>
-    </Box>
-  )
+          {AnswerFields(quiz.questions[questionNumber - 1])}
 
-  //   if (questionNumber < quiz.questions.length) {
-  //       return (
-  //       <Box mt={5} display="flex" alignItems="center">
-  //         <Typography variant="h4">
-  //           {`Question number ${questionNumber}/${quiz.questions.length}`}:
-  //         </Typography>
-  //         <form
-  //           onSubmit={handleQuestionSubmit}
-  //           style={{
-  //             width: '50%',
-  //             margin: 'auto',
-  //             position: 'relative',
-  //             paddingBottom: '50px',
-  //           }}
-  //         >
-  //           <QuestionTextField
-  //             questionNumber={questionNumber}
-  //             label={`Question number ${questionNumber}`}
-  //             onChange={handleQuestionChange}
-  //           />
-  //           {/* {AnswerFields()} */}
-  //           <Button
-  //             style={{ position: 'absolute', bottom: '0', right: '0' }}
-  //             variant="contained"
-  //             type="submit"
-  //           >
-  //             {questionNumber < quiz.questions.length ? 'NEXT' : 'FINISH'}
-  //           </Button>
-  //         </form>
-  //       </Box>
-  //     )
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+            }}
+          >
+            {questionNumber < quiz.questions.length ? 'NEXT' : 'FINISH'}
+          </Button>
+        </form>
+      </Box>
+    )
+  }
 }
 
 export default Quiz

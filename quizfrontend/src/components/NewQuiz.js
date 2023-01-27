@@ -12,7 +12,9 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
     introduction: '',
     questions: [],
     type: '',
+    id: 0,
   })
+  //conditional rendering is set using the questionNumber
   const [questionNumber, setQuestionNumber] = useState(0)
   const [categories, setCategories] = useState([
     'Information Technology',
@@ -47,8 +49,14 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
       setCategory('')
       setAmountOfQuestions('')
       setType('')
-      setQuiz({ topic: '', introduction: '', questions: [] })
-      navigate('/choose-quiz')
+      setQuiz({
+        topic: '',
+        introduction: '',
+        questions: [],
+        type: '',
+        id: 0,
+      })
+      navigate('/quizzes')
     }
   }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes, navigate])
 
@@ -59,7 +67,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
 
   const handleSettingsSubmit = (event) => {
     event.preventDefault()
-    setQuiz({...quiz, type: type})
+    setQuiz({ ...quiz, type: type, id: quizzes.length + 1 })
     setQuestionNumber(1)
   }
 
@@ -123,7 +131,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
           />
 
           <Button
-            style={{ position: 'absolute', bottom: '0', right: '0' }}
+            sx={{ position: 'absolute', bottom: '0', right: '0' }}
             variant="contained"
             type="submit"
           >
@@ -261,7 +269,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
         />
         {AnswerFields()}
         <Button
-          style={{ position: 'absolute', bottom: '0', right: '0' }}
+          style={{ position: 'relative', bottom: '0', right: '0' }}
           variant="contained"
           type="submit"
         >

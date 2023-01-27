@@ -24,6 +24,7 @@ import {
 
 import { useState } from 'react'
 
+
 const App = () => {
   const intialTrueFalseQuiz = {
     id: 1,
@@ -93,8 +94,44 @@ const App = () => {
       },
     ],
   }
-  const [quizzes, setQuizzes] = useState([intialTrueFalseQuiz, intialMultichoiceQuiz])
+
+  const initialOpenQuiz = {
+    id: 3,
+    topic: 'Famous artists',
+    introduction: '',
+    type: 'Open answer (exact string)',
+    questions: [
+      {
+        question: 'Who painted the famous artwork "Mona Lisa"?',
+        answer: 'Leonardo da Vinci',
+        wrong1: '',
+        wrong2: '',
+        wrong3: '',
+        wrong4: '',
+      },
+      {
+        question:
+          'Who is known for painting "The Scream"?',
+        answer: 'Edvard Munch',
+        wrong1: '',
+        wrong2: '',
+        wrong3: '',
+        wrong4: '',
+      },
+      {
+        question:
+          'Who is known for creating the sculpture "David"?',
+        answer: 'Michelangelo',
+        wrong1: '',
+        wrong2: '',
+        wrong3: '',
+        wrong4: '',
+      },
+    ],
+  }
+  const [quizzes, setQuizzes] = useState([intialTrueFalseQuiz, intialMultichoiceQuiz, initialOpenQuiz])
   const match = useMatch('/quizzes/:id')
+
   const quiz = match 
     ? quizzes.find(q => q.id === Number(match.params.id))
     : null
@@ -126,6 +163,7 @@ const App = () => {
             >
               Quiz
             </Button>
+            
 
             <Button
               style={{ width: '100px', height: '50px' }}
