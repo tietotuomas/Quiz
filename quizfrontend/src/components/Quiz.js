@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Results from './Results'
 import SelectField from './SelectField'
 
-const Quiz = ({ quiz }) => {
+const Quiz = ({ quiz, createNotification }) => {
   console.log({ quiz })
   //conditional rendering is set using the questionNumber
   const [questionNumber, setQuestionNumber] = useState(0)
@@ -27,11 +27,15 @@ const Quiz = ({ quiz }) => {
 
   const handleAnswersSubmit = (event) => {
     event.preventDefault()
-    const answeredQuestion = quiz.questions[questionNumber - 1].question
-    setAnswers({...answers, [answeredQuestion]: answer})
-    
+    const answeredQuestion = quiz.questions[questionNumber - 1]
+    setAnswers({ ...answers, [answeredQuestion.question]: answer })
+
+    answer === answeredQuestion.answer
+      ? createNotification('Correct!', 'success')
+      : createNotification(`Wrong! The correct answer was: ${answeredQuestion.answer}`, 'warning')
+
     setQuestionNumber(questionNumber + 1)
-    
+
     setAnswer('')
   }
 
@@ -85,9 +89,8 @@ const Quiz = ({ quiz }) => {
     }
   }
 
-
-  if (showResults===true) {
-    console.log('show');
+  if (showResults === true) {
+    console.log('show')
     return <Results answers={answers} setAnswers={setAnswers} quiz={quiz} />
   }
 

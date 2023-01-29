@@ -7,9 +7,9 @@ import About from './components/About'
 import NewQuiz from './components/NewQuiz'
 import QuizList from './components/QuizList'
 import Quiz from './components/Quiz'
+import Notification from './components/Notification'
 
 import QuizIcon from '@mui/icons-material/Quiz'
-
 
 import {
   AppBar,
@@ -22,7 +22,6 @@ import {
 } from '@mui/material'
 
 import { useState } from 'react'
-
 
 const App = () => {
   const intialTrueFalseQuiz = {
@@ -66,7 +65,8 @@ const App = () => {
     type: 'Multichoice answers',
     questions: [
       {
-        question: 'What is the primary advantage of using GraphQL over a traditional REST API?',
+        question:
+          'What is the primary advantage of using GraphQL over a traditional REST API?',
         answer: 'Reduced number of API calls',
         wrong1: 'Stronger typing',
         wrong2: 'More flexibility in querying data',
@@ -74,8 +74,7 @@ const App = () => {
         wrong4: '',
       },
       {
-        question:
-          'Which of the following is a valid operation in GraphQL?',
+        question: 'Which of the following is a valid operation in GraphQL?',
         answer: 'MUTATION',
         wrong1: 'DELETE',
         wrong2: 'GET',
@@ -109,8 +108,7 @@ const App = () => {
         wrong4: '',
       },
       {
-        question:
-          'Who is known for painting "The Scream"?',
+        question: 'Who is known for painting "The Scream"?',
         answer: 'Edvard Munch',
         wrong1: '',
         wrong2: '',
@@ -118,8 +116,7 @@ const App = () => {
         wrong4: '',
       },
       {
-        question:
-          'Who is known for creating the sculpture "David"?',
+        question: 'Who is known for creating the sculpture "David"?',
         answer: 'Michelangelo',
         wrong1: '',
         wrong2: '',
@@ -128,11 +125,33 @@ const App = () => {
       },
     ],
   }
-  const [quizzes, setQuizzes] = useState([intialTrueFalseQuiz, intialMultichoiceQuiz, initialOpenQuiz])
+  const [notificationMessage, setNotificationMessage] = useState({
+    msg: '',
+    severity: 'info',
+  })
+  const [timeOutId, setTimeOutId] = useState(null)
+  const [quizzes, setQuizzes] = useState([
+    intialTrueFalseQuiz,
+    intialMultichoiceQuiz,
+    initialOpenQuiz,
+  ])
   const match = useMatch('/quizzes/:id')
 
-  const quiz = match 
-    ? quizzes.find(q => q.id === Number(match.params.id))
+  const createNotification = (msg, severity = 'info', time = 4) => {
+    setNotificationMessage({ msg: msg, severity: severity })
+    if (timeOutId) {
+      //clear timeOutId so the current notification won't disappear too early
+      clearTimeout(timeOutId)
+    }
+    const id = setTimeout(() => {
+      setNotificationMessage({ msg: '', severity: '' })
+    }, time * 1000)
+
+    setTimeOutId(id)
+  }
+
+  const quiz = match
+    ? quizzes.find((q) => q.id === Number(match.params.id))
     : null
 
   return (
@@ -141,7 +160,7 @@ const App = () => {
         <Toolbar>
           <div>
             <IconButton
-            component={Link}
+              component={Link}
               size="large"
               edge="start"
               color="inherit"
@@ -156,7 +175,7 @@ const App = () => {
           </div>
           <Stack direction="row" spacing={2}>
             <Button
-            component={Link}
+              component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
@@ -164,10 +183,9 @@ const App = () => {
             >
               Quiz
             </Button>
-            
 
             <Button
-            component={Link}
+              component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
@@ -177,7 +195,7 @@ const App = () => {
             </Button>
 
             <Button
-            component={Link}
+              component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
@@ -186,7 +204,7 @@ const App = () => {
               Login
             </Button>
             <Button
-            component={Link}
+              component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
@@ -195,7 +213,7 @@ const App = () => {
               Stats
             </Button>
             <Button
-            component={Link}
+              component={Link}
               style={{ width: '100px', height: '50px' }}
               size="large"
               color="inherit"
@@ -206,18 +224,30 @@ const App = () => {
           </Stack>
         </Toolbar>
       </AppBar>
+      {notificationMessage.msg && (
+        <Notification
+          message={notificationMessage.msg}
+          severity={notificationMessage.severity}
+        />
+      )}
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route
-          path="/quizzes"
-          element={<QuizList quizzes={quizzes} />}
-        ></Route>
+        <Route path="/quizzes" element={<QuizList quizzes={quizzes} />}></Route>
         <Route
           path="/create-quiz"
-          element={<NewQuiz quizzes={quizzes} setQuizzes={setQuizzes} />}
+          element={
+            <NewQuiz
+              quizzes={quizzes}
+              setQuizzes={setQuizzes}
+              createNotification={createNotification}
+            />
+          }
         ></Route>
         <Route path="/questions" element={<Questions />}></Route>
-        <Route path="/quizzes/:id" element={<Quiz quiz={quiz}/>} />
+        <Route
+          path="/quizzes/:id"
+          element={<Quiz quiz={quiz} createNotification={createNotification} />}
+        />
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/stats" element={<Statistics />}></Route>

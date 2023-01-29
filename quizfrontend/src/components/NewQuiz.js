@@ -4,7 +4,8 @@ import QuestionTextField from './QuestionField'
 import SelectField from './SelectField'
 import { useNavigate } from 'react-router-dom'
 
-const NewQuiz = ({ quizzes, setQuizzes }) => {
+const NewQuiz = ({ quizzes, setQuizzes, createNotification }) => {
+  
   console.log('NewQuiz renderöityy')
 
   const [quiz, setQuiz] = useState({
@@ -48,6 +49,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
       setQuestionNumber(0)
       setCategory('')
       setAmountOfQuestions('')
+      createNotification(`New quiz "${quiz.topic}" successfully created`, 'success')
       setType('')
       setQuiz({
         topic: '',
@@ -58,7 +60,7 @@ const NewQuiz = ({ quizzes, setQuizzes }) => {
       })
       navigate('/quizzes')
     }
-  }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes, navigate])
+  }, [questionNumber, setQuizzes, amountOfQuestions, quiz, quizzes, navigate, createNotification])
 
   const handleOptionChange = (event, setOption) => {
     console.log('option change')
