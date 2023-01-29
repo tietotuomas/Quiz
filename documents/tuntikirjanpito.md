@@ -14,6 +14,6 @@
 | 27.1. |   2 | Filter-kentän lisäys listausnäkymään. Listusnäkymän ulkonän parantelu. |
 | 27.1. |   3 | Visailujen vastaus -lomakkeen luonti |
 | 27.1. |   1 | Bugin jäljittäminen ja korjaaminen (ts. sovelluksen linkkien refaktorointi, href-linkit aiheuttivat react-tilojen nollauksen) |
-| ? |     ? | Tulossivun rakentaminen |
+| 29.1.  |     3 | Visaan vastaamisen jälkeisen tulossivun rakentaminen |
 | ? |     ? | Notifikaatio-komponentin rakentaminen. Notifikaatioiden luonti tärkeimmille tapahtumille (esim. uuden visailun luominen) |
-| yht   |  25  || 
+| yht   |  28  || 
