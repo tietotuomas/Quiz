@@ -64,7 +64,7 @@ const Results = ({ answers, setAnswers, quiz }) => {
           alignItems="flex-start"
         >
           {quiz.questions.map((q, i) => (
-            <div style={{margin:'8px'}}>
+            <div key={q.question} style={{ margin: '8px' }}>
               <Typography variant="h5">{`${i + 1}. ${q.question}`}</Typography>
               <Typography variant="h5">
                 Your answer: {answers[q.question]}
