@@ -1,5 +1,4 @@
 import { Route, Routes, useMatch, Link } from 'react-router-dom'
-import Results from './components/Results'
 import Questions from './components/Questions'
 import Home from './components/Home'
 import Login from './components/Login'
@@ -219,7 +218,6 @@ const App = () => {
         ></Route>
         <Route path="/questions" element={<Questions />}></Route>
         <Route path="/quizzes/:id" element={<Quiz quiz={quiz}/>} />
-        <Route path="/results" element={<Results />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/stats" element={<Statistics />}></Route>
