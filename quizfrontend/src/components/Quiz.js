@@ -1,5 +1,6 @@
 import { Box, Typography, Button, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
+import Results from './Results'
 import SelectField from './SelectField'
 
 const Quiz = ({ quiz }) => {
@@ -7,7 +8,8 @@ const Quiz = ({ quiz }) => {
   //conditional rendering is set using the questionNumber
   const [questionNumber, setQuestionNumber] = useState(0)
   const [answer, setAnswer] = useState('')
-  const [answers, setAnswers] = useState([])
+  const [answers, setAnswers] = useState({})
+  const [showResults, setShowResults] = useState(false)
 
   const handleStartQuiz = () => {
     setQuestionNumber(1)
@@ -15,18 +17,21 @@ const Quiz = ({ quiz }) => {
 
   useEffect(() => {
     if (questionNumber > quiz.questions.length) {
-      setAnswers([])
       setQuestionNumber(0)
       setAnswer('')
+      setShowResults(true)
     }
   }, [questionNumber, quiz.questions.length])
 
-  const handleAnswersSubmit = (event) => {
-    console.log({ answers })
-    event.preventDefault()
+  console.log({ showResults })
 
+  const handleAnswersSubmit = (event) => {
+    event.preventDefault()
+    const answeredQuestion = quiz.questions[questionNumber - 1].question
+    setAnswers({...answers, [answeredQuestion]: answer})
+    
     setQuestionNumber(questionNumber + 1)
-    setAnswers(answers.concat(answer))
+    
     setAnswer('')
   }
 
@@ -42,6 +47,7 @@ const Quiz = ({ quiz }) => {
         />
       )
     }
+
     if (quiz.type === 'Multichoice answers') {
       const choices = [
         question.answer,
@@ -77,6 +83,12 @@ const Quiz = ({ quiz }) => {
         />
       )
     }
+  }
+
+
+  if (showResults===true) {
+    console.log('show');
+    return <Results answers={answers} setAnswers={setAnswers} quiz={quiz} />
   }
 
   if (questionNumber === 0) {
