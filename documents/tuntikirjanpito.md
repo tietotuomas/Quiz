@@ -15,5 +15,5 @@
 | 27.1. |   3 | Visailujen vastaus -lomakkeen luonti |
 | 27.1. |   1 | Bugin jäljittäminen ja korjaaminen (ts. sovelluksen linkkien refaktorointi, href-linkit aiheuttivat react-tilojen nollauksen) |
 | 29.1.  |     3 | Visaan vastaamisen jälkeisen tulossivun rakentaminen |
-| 29.1. |     2 | Notifikaatio-komponentin rakentaminen. Notifikaatioiden luonti tärkeimmille tapahtumille, kuten vastauksen oikeellisuden tarkastus |
+| 29.1. |     2 | Notifikaatio-komponentin rakentaminen. Komponentin avulla ilmoitus, joka kertoo, menikö yksittäinen vastaus oikein vai väärin|
 | yht   |  30  || 
